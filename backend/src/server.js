@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true })); // support form-data for images
 
 // Routes
 app.use("/api/client", clientRoutes);
-app.use("/api/hotel", hotelRoutes);
+app.use("/api/hotel", hotelRoutes); 
 app.use("/api/room", roomRoutes);
 app.use("/api/reservation", reservationRoutes);
 
