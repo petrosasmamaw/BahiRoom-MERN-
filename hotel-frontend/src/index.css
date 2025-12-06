@@ -1,0 +1,245 @@
+/* =========================================
+   GLOBAL THEME
+========================================= */
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --brand: #0ea5a4;
+  --accent: #2563eb;
+
+  --radius: 10px;
+  --shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  background: var(--bg);
+  font-family: "Inter", sans-serif;
+  color: var(--text);
+}
+
+
+/* =========================================
+   NAVBAR
+========================================= */
+.nav {
+  background: var(--card);
+  border-bottom: 1px solid #e5eaf1;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.nav__inner {
+  max-width: 1100px;
+  margin: auto;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav__brand {
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--brand);
+  text-decoration: none;
+}
+
+.nav__links {
+  display: flex;
+  gap: 12px;
+}
+
+.nav__link {
+  padding: 7px 10px;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+.nav__link:hover {
+  background: #eef2ff;
+}
+
+.nav__auth {
+  display: flex;
+  gap: 10px;
+}
+
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+.container {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.page-title {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.page-subtitle {
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+
+/* =========================================
+   INPUTS & FORMS
+========================================= */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.label {
+  font-size: 14px;
+}
+
+.input {
+  padding: 12px;
+  border: 1px solid #d3d9e2;
+  border-radius: var(--radius);
+  background: white;
+  font-size: 15px;
+}
+
+.input:focus {
+  outline: 2px solid var(--accent);
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+.btn {
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: white;
+}
+
+.btn--primary:hover {
+  opacity: 0.9;
+}
+
+.btn--ghost {
+  background: transparent;
+  border: 1px solid #d3d9e2;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+
+/* =========================================
+   CARDS
+========================================= */
+.card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.grid--rooms {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+
+/* =========================================
+   AUTH PAGES (Perfect Center & Fixed Width)
+========================================= */
+.auth {
+  height: calc(100vh - 70px);
+  display: flex;
+  justify-content: center;   /* center horizontally */
+  align-items: center;       /* center vertically */
+  padding: 16px;
+}
+
+.auth__card {
+  width: 350px;
+  background: var(--card);
+  padding: 28px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.auth__title {
+  font-size: 22px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.auth__alt {
+  text-align: center;
+  margin-top: 14px;
+  color: var(--muted);
+}
+
+.auth__alt a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.auth__alt a:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================
+   ALERTS
+========================================= */
+.alert {
+  padding: 10px;
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.alert--error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.alert--success {
+  background: #e0fce0;
+  color: #065f46;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+@media (max-width: 640px) {
+  .nav__links {
+    display: none;
+  }
+
+  .auth__card {
+    width: 90vw;
+  }
+}
