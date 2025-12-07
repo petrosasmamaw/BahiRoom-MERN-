@@ -44,7 +44,7 @@ export default function App() {
 
         {user && (
           <>
-            <Route path="/" element={<Profile />} />
+            <Route path="/" element={<Profile user={user} />} />
             <Route path="/rooms" element={<Rooms />} />
             <Route path="/create-room" element={<CreateRoom />} />
             <Route path="/reservation" element={<Reservation />} />

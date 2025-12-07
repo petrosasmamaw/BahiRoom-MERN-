@@ -33,6 +33,16 @@ export const getHotelById = async (req, res) => {
     }
 };
 
+export const getHotelByUserId = async (req, res) => {
+    try {
+        const hotel = await Hotel.findOne({ userId: req.params.userId });
+        if (!hotel) return res.status(404).json({ message: 'Hotel not found for user' });
+        res.json(hotel);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 export const updateHotel = async (req, res) => {
     try {
         const updatedFields = req.body;
