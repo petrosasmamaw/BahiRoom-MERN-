@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const CLIENTAPI = "http://localhost:5001/api/hotel";
+const CLIENTAPI = "http://localhost:5000/api/hotel";
 
 export const fetchHotels = createAsyncThunk("hotels/fetchHotels", async () => {
     const response = await axios.get(CLIENTAPI);
@@ -9,15 +9,47 @@ export const fetchHotels = createAsyncThunk("hotels/fetchHotels", async () => {
 });
 
 export const addHotel = createAsyncThunk("hotels/addHotel", async (hotelData) => {
-    const response = await axios.post(CLIENTAPI, hotelData);
+    // if there's an imageFile (File object), send as FormData so backend upload middleware can parse it
+    if (hotelData.imageFile) {
+        const fd = new FormData();
+        fd.append('name', hotelData.name || '');
+        fd.append('userId', hotelData.userId || '');
+        fd.append('address', hotelData.address || '');
+        fd.append('phone', hotelData.phone || '');
+        if (hotelData.status) fd.append('status', hotelData.status);
+        fd.append('image', hotelData.imageFile);
+        const response = await axios.post(CLIENTAPI, fd, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        return response.data;
+    }
+    // otherwise send JSON
+    const { imageFile, ...payload } = hotelData;
+    const response = await axios.post(CLIENTAPI, payload);
     return response.data;
 });
 export const fetchHotelById = createAsyncThunk("hotels/fetchHotelById", async (hotelId) => {
-    const response = await axios.get(`${CLIENTAPI}/${hotelId}`);
+    // fetch by userId (owner id). backend provides /user/:userId route
+    const response = await axios.get(`${CLIENTAPI}/user/${hotelId}`);
     return response.data;
 });
 export const updateHotel = createAsyncThunk("hotels/updateHotel", async ({ hotelId, updatedData }) => {
-    const response = await axios.put(`${CLIENTAPI}/${hotelId}`, updatedData);
+    // If updatedData contains an imageFile, send as FormData
+    if (updatedData.imageFile) {
+        const fd = new FormData();
+        if (updatedData.name) fd.append('name', updatedData.name);
+        if (updatedData.userId) fd.append('userId', updatedData.userId);
+        if (updatedData.address) fd.append('address', updatedData.address);
+        if (updatedData.phone) fd.append('phone', updatedData.phone);
+        if (updatedData.status) fd.append('status', updatedData.status);
+        fd.append('image', updatedData.imageFile);
+        const response = await axios.put(`${CLIENTAPI}/${hotelId}`, fd, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        return response.data;
+    }
+    const { imageFile, ...payload } = updatedData;
+    const response = await axios.put(`${CLIENTAPI}/${hotelId}`, payload);
     return response.data;
 });
 

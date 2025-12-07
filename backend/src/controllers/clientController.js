@@ -10,10 +10,10 @@ export const getAllClients = async (req, res) => {
 };
 
 export const createClient = async (req, res) => {
-    const { name, userId, idCard, phone, status } = req.body;
+    const { name, userId, idCardNo, phone, status } = req.body;
     const image = req.file?.path; // multer + cloudinary path
 
-    const newClient = new Client({ name, userId, idCard, phone, status, image });
+    const newClient = new Client({ name, userId, idCardNo, phone, status, image });
 
     try {
         const savedClient = await newClient.save();
@@ -27,6 +27,16 @@ export const getClientById = async (req, res) => {
     try {
         const client = await Client.findById(req.params.id);
         if (!client) return res.status(404).json({ message: 'Client not found' });
+        res.json(client);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getClientByUserId = async (req, res) => {
+    try {
+        const client = await Client.findOne({ userId: req.params.userId });
+        if (!client) return res.status(404).json({ message: 'Client not found for user' });
         res.json(client);
     } catch (error) {
         res.status(500).json({ message: error.message });

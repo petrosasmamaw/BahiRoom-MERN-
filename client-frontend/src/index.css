@@ -217,3 +217,20 @@ body {
     width: 92vw;
   }
 }
+
+/* PROFILE PAGE STYLES */
+.profile-page { padding-bottom: 48px; }
+.profile-card { display:flex; flex-direction:column; gap:16px; }
+.profile-header { display:flex; align-items:center; gap:14px; border-bottom:1px solid #eef2f7; padding-bottom:12px; }
+.profile-avatar-wrap { flex:0 0 auto; }
+.profile-avatar { width:88px; height:88px; border-radius:12px; object-fit:cover; box-shadow:0 6px 18px rgba(2,6,23,0.06); border:2px solid rgba(15,23,42,0.04); }
+.profile-avatar--placeholder { display:inline-flex; align-items:center; justify-content:center; width:88px; height:88px; border-radius:12px; background:linear-gradient(180deg,#f8fafc,#eef2ff); color:var(--accent); font-weight:700; }
+.profile-info { display:flex; flex-direction:column; }
+.profile-name { font-size:18px; margin-bottom:4px; }
+.profile-meta { color:var(--muted); font-size:13px; }
+.profile-body { padding-top:12px; }
+.profile-form .label { margin-top:8px; }
+.profile-actions { margin-top:14px; display:flex; gap:10px; justify-content:flex-end; }
+
+@media (max-width:720px) { .profile-avatar, .profile-avatar--placeholder { width:64px; height:64px; } .profile-actions { justify-content:center; } }
+

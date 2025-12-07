@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import { supabase, getCurrentUser } from "./Components/slice/supabaseClient";
+import { fetchClientById } from "./Components/slice/slice/clientSlice";
 
 import Navbar from "./Components/pages/navbar";
 import Hotels from "./Components/pages/hotels";
@@ -11,9 +13,20 @@ import Reservations from "./Components/pages/reservation";
 import Login from "./Components/pages/login";
 import Register from "./Components/pages/register";
 
+
 export default function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { clients, status, error } = useSelector((state) => state.clients);
+  const [clientStatus, setClientStatus] = useState(null);
+
+  useEffect(() => {
+    const myClient = clients.find((c) => c.userId === user?.id);
+    setClientStatus(myClient?.status ?? null);
+  }, [clients, user]);
+
+
 
   // Initial user load
   useEffect(() => {
@@ -29,6 +42,8 @@ export default function App() {
 
     loadUser();
 
+    // (keep loadUser isolated here) fetch of client happens in a separate effect
+
     // Listen for login / logout
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
@@ -42,6 +57,13 @@ export default function App() {
       listener?.unsubscribe?.();
     };
   }, []);
+
+  // Fetch client record when user becomes available
+  useEffect(() => {
+    if (user?.id) {
+      dispatch(fetchClientById(user.id));
+    }
+  }, [dispatch, user]);
 
   if (loading) return null; // prevents flash
 
@@ -65,23 +87,23 @@ export default function App() {
             {/* Protected */}
             <Route
               path="/"
-              element={user ? <Hotels user={user} /> : <Navigate to="/login" replace />}
+              element={user ? <Hotels user={user} clientStatus={clientStatus} /> : <Navigate to="/login" replace />}
             />
             <Route
               path="/hotels"
-              element={user ? <Hotels user={user} /> : <Navigate to="/login" replace />}
+              element={user ? <Hotels user={user} clientStatus={clientStatus} /> : <Navigate to="/login" replace />}
             />
             <Route
               path="/hotels/:id"
-              element={user ? <HotelDetail user={user} /> : <Navigate to="/login" replace />}
+              element={user ? <HotelDetail user={user} clientStatus={clientStatus} /> : <Navigate to="/login" replace />}
             />
             <Route
               path="/profile"
-              element={user ? <Profile user={user} /> : <Navigate to="/login" replace />}
+              element={user ? <Profile user={user} clientStatus={clientStatus} /> : <Navigate to="/login" replace />}
             />
             <Route
               path="/reservations"
-              element={user ? <Reservations user={user} /> : <Navigate to="/login" replace />}
+              element={user ? <Reservations user={user} clientStatus={clientStatus} /> : <Navigate to="/login" replace />}
             />
 
             {/* Fallback */}
