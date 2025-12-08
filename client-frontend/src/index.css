@@ -324,6 +324,13 @@ body {
   background: transparent;
   padding: 12px 0;
 }
+.hotel-media { width: 260px; height:160px; flex:0 0 260px; border-radius: 10px; overflow:hidden; }
+.hotel-media .hotel-thumb { width:100%; height:100%; object-fit:cover; display:block; }
+.hotel-media--placeholder { display:inline-flex; align-items:center; justify-content:center; width:260px; height:160px; border-radius:10px; background:linear-gradient(180deg,#eef2ff,#f8fafc); color:var(--accent); font-weight:700; }
+
+.hotel-meta-block { display:flex; flex-direction:column; gap:6px; }
+.hotel-phone { color: var(--muted); font-size:14px; }
+.hotel-created { color: var(--muted); font-size:13px; }
 .hotel-title { font-size: 26px; font-weight: 700; margin: 0 0 6px; }
 .divider { border: none; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,0,0,0.06), transparent); margin: 18px 0; }
 
@@ -337,6 +344,27 @@ body {
   border-radius: 10px;
   box-shadow: var(--shadow);
   border: 1px solid rgba(15,23,42,0.03);
+}
+.room-row { display:flex; gap:12px; align-items:flex-start; }
+.room-media-small { width:120px; height:88px; flex:0 0 120px; overflow:hidden; border-radius:8px; background:linear-gradient(180deg,#fafbff,#f1f5f9); display:flex; align-items:center; justify-content:center; }
+.room-media-small img { width:100%; height:100%; object-fit:cover; display:block; }
+.media-placeholder { color:var(--muted); font-size:13px; }
+.room-info { flex:1; }
+
+/* Room badges and actions */
+.room-head { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.room-badges { display:flex; gap:8px; align-items:center; }
+.badge { display:inline-block; padding:4px 8px; border-radius:999px; background: #f1f5f9; color: var(--muted); font-size: 12px; font-weight:600; }
+.badge--success { background: #ecfdf5; color: #065f46; }
+.badge--muted { background: #fff7ed; color: #92400e; }
+
+.room-actions { margin-top: 10px; display:flex; gap:8px; }
+.btn--sm { padding: 8px 10px; font-size:13px; }
+
+/* Make room-card slightly denser on smaller screens */
+@media (max-width:720px) {
+  .room-row { flex-direction: row; gap:12px; }
+  .room-media-small { width:100px; height:80px; }
 }
 .room-type { font-weight: 700; margin-bottom: 6px; }
 .room-price { color: var(--accent); font-weight:600; margin-bottom: 8px; }
