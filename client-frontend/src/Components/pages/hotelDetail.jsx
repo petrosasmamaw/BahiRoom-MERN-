@@ -4,8 +4,9 @@ import { useParams } from "react-router-dom";
 
 import { fetchHotelById } from "../slice/slice/hotelSlice";
 import { fetchRoomsByHotelId } from "../slice/slice/roomSlice";
+import { addReservation, fetchReservationsByClientId } from "../slice/slice/reservationSlice";
 
-export default function HotelDetail() {
+export default function HotelDetail({ user }) {
   const { id } = useParams();
   const dispatch = useDispatch();
 
@@ -92,8 +93,33 @@ export default function HotelDetail() {
                   <p className="room-description">{room.description}</p>
 
                   <div className="room-actions">
-                    <button className="btn btn--ghost btn--sm">Edit</button>
-                    <button className="btn btn--primary btn--sm">View</button>
+                    <button
+                      className="btn btn--primary btn--sm"
+                      onClick={async () => {
+                        if (!user?.id) {
+                          alert("Please log in to make a reservation.");
+                          return;
+                        }
+
+                        const payload = {
+                          clientId: user.id,
+                          hotelId: hotel.userId || hotel._id,
+                          roomNumber: room.roomNumber || room._id,
+                        };
+
+                        try {
+                          await dispatch(addReservation(payload)).unwrap();
+                          // refresh user's reservations
+                          dispatch(fetchReservationsByClientId(user.id));
+                          alert("Reservation created successfully.");
+                        } catch (err) {
+                          console.error(err);
+                          alert("Failed to create reservation. See console for details.");
+                        }
+                      }}
+                    >
+                      Reserve
+                    </button>
                   </div>
                 </div>
               </div>

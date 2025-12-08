@@ -3,7 +3,7 @@ import axios from "axios";
 
 const CLIENTAPI = "http://localhost:5000/api/room";
 
-export const fetchRooms = createAsyncThunk("rooms/fetchRooms", async () => {
+export const fetchRooms = createAsyncThunk("rooms/fetchRooms", async () => { 
     const response = await axios.get(CLIENTAPI);
     return response.data;
 });
