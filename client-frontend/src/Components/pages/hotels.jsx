@@ -1,91 +1,46 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchHotels } from "../slice/slice/hotelSlice";
 import { Link } from "react-router-dom";
 
-const API = "http://localhost:5001/api/hotel";
+export default function Hotels() {
+  const dispatch = useDispatch();
+  const { hotels, status, error } = useSelector((state) => state.hotels);
 
-export default function Hotels({ user, clientStatus }) {
-	const [hotels, setHotels] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
+  useEffect(() => {
+    dispatch(fetchHotels());
+  }, [dispatch]);
 
-	useEffect(() => {
-		let mounted = true;
-		const fetchHotels = async () => {
-			try {
-				const res = await axios.get(API);
-				if (mounted) setHotels(res.data || []);
-			} catch (err) {
-				if (mounted) setError(err.message || "Failed to load hotels");
-			} finally {
-				if (mounted) setLoading(false);
-			}
-		};
-		fetchHotels();
-		return () => (mounted = false);
-	}, []);
+  if (status === "loading") return <div className="loading">Loading hotels...</div>;
+  if (status === "failed") return <div className="error">{error}</div>;
 
-	if (clientStatus === "inactive") {
-		return (
-			<section className="page">
-				<h2>Hotels</h2>
-				<p className="muted">Welcome {user?.email ?? "guest"}</p>
-				<div className="card">
-					<p>
-						Your account is inactive. Please contact the administrator to reactivate
-						access.
-					</p>
-				</div>
-			</section>
-		);
-	}
+  return (
+    <section className="page hotels-page">
+      <h2 className="page-title">Hotels</h2>
 
-	if (clientStatus === "active") {
-		return (
-			<section className="page">
-				<h2>Hotels</h2>
-				<p className="muted">Welcome {user?.email ?? "guest"}</p>
-				<div className="card">
-					<p>Hotel features are coming soon for active clients.</p>
-				</div>
-			</section>
-		);
-	}
+      <div className="hotel-list">
+        {hotels.map((hotel) => (
+          <Link 
+            key={hotel._id}
+            to={`/hotels/${hotel._id}`}
+            className="hotel-card"
+          >
+            <div className="hotel-media">
+              {hotel.image ? (
+                <img src={hotel.image} alt={hotel.hotelName} className="hotel-thumb" />
+              ) : (
+                <div className="hotel-media--placeholder">No image</div>
+              )}
+            </div>
 
-	return (
-		<section className="page">
-			<h2>Hotels</h2>
-			<p className="muted">Welcome {user?.email ?? "guest"}</p>
-
-			{loading && <div className="card">Loading hotels...</div>}
-			{error && <div className="card alert alert--error">{error}</div>}
-
-			{!loading && !error && (
-				<div className="hotels-grid">
-					{hotels.length === 0 && (
-						<div className="card">No hotels available yet.</div>
-					)}
-
-					{hotels.map((hotel) => (
-						<Link
-							to={`/hotels/${hotel._id || hotel.id}`}
-							key={hotel._id || hotel.id}
-							className="hotel-card"
-						>
-							{hotel.image ? (
-								<img
-									src={hotel.image}
-									alt={hotel.name}
-									style={{ width: "100%", height: 140, objectFit: "cover", borderRadius: 8, marginBottom: 12 }}
-								/>
-							) : null}
-							<h3 style={{ margin: "0 0 6px" }}>{hotel.name}</h3>
-							<div className="muted" style={{ marginBottom: 8 }}>{hotel.address}</div>
-							<div style={{ fontSize: 14, color: "var(--muted)"}}>Phone: {hotel.phone}</div>
-						</Link>
-					))}
-				</div>
-			)}
-		</section>
-	);
+            <div className="hotel-body">
+              <h3 className="hotel-name">{hotel.name}</h3>
+              <p className="hotel-location">{hotel.address}</p>
+              <p className="hotel-status">Status: {hotel.status}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
 }

@@ -1,86 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 
-const HOTEL_API = "http://localhost:5001/api/hotel";
-const ROOM_API = "http://localhost:5001/api/room";
+import { fetchHotelById } from "../slice/slice/hotelSlice";
+import { fetchRoomsByHotelId } from "../slice/slice/roomSlice";
 
-export default function HotelDetail({ user }) {
-	const { id } = useParams();
-	const [hotel, setHotel] = useState(null);
-	const [rooms, setRooms] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
+export default function HotelDetail() {
+  const { id } = useParams();
+  const dispatch = useDispatch();
 
-	useEffect(() => {
-		let mounted = true;
+  const { hotels } = useSelector((state) => state.hotels);
+  const { rooms } = useSelector((state) => state.rooms);
 
-		const fetchHotelAndRooms = async () => {
-			try {
-				setLoading(true);
-				const resHotel = await axios.get(`${HOTEL_API}/${id}`);
-				const h = resHotel.data;
-				if (!mounted) return;
-				setHotel(h);
+  const hotel = hotels.find((h) => h._id === id);
 
-				// Use hotel's _id to fetch rooms (fallback to id field)
-				const hotelId = h._id || h.id;
-				const resRooms = await axios.get(`${ROOM_API}/hotel/${hotelId}`);
-				if (!mounted) return;
-				setRooms(resRooms.data || []);
-			} catch (err) {
-				if (mounted) setError(err.message || "Failed to load hotel details");
-			} finally {
-				if (mounted) setLoading(false);
-			}
-		};
+  useEffect(() => {
+    dispatch(fetchHotelById(id));
+    dispatch(fetchRoomsByHotelId(id));
+  }, [dispatch, id]);
 
-		fetchHotelAndRooms();
-		return () => (mounted = false);
-	}, [id]);
+  if (!hotel) return <div className="loading">Loading hotel...</div>;
 
-	return (
-		<section className="page">
-			<h2>Hotel Detail</h2>
-			<p className="muted">Hotel id: {id}</p>
+  return (
+    <section className="page hotel-detail-page">
+      
+      {/* HOTEL INFO */}
+      <div className="hotel-info">
+        <h2 className="hotel-title">{hotel.hotelName}</h2>
+        <p className="hotel-location">📍 {hotel.location}</p>
+        <p className="hotel-status">Status: {hotel.status}</p>
+      </div>
 
-			{loading && <div className="card">Loading...</div>}
-			{error && <div className="card alert alert--error">{error}</div>}
+      <hr className="divider" />
 
-			{hotel && (
-				<div className="hotel-detail">
-					<div className="hotel-detail-header card">
-						{hotel.image ? (
-							<img className="hotel-image" src={hotel.image} alt={hotel.name} />
-						) : (
-							<div className="hotel-image hotel-image--placeholder">{hotel.name?.[0] ?? "H"}</div>
-						)}
-						<div style={{ marginLeft: 16 }}>
-							<h3 style={{ margin: 0 }}>{hotel.name}</h3>
-							<div className="muted">{hotel.address}</div>
-							<div style={{ marginTop: 8 }}>Phone: {hotel.phone}</div>
-							<div style={{ marginTop: 8 }}><strong>Owner ID:</strong> {hotel.userId}</div>
-						</div>
-					</div>
+      {/* ROOMS LIST */}
+      <div className="room-list">
+        <h3 className="section-title">Rooms</h3>
 
-					<div className="rooms-section" style={{ marginTop: 18 }}>
-						<h3>Rooms</h3>
-						{rooms.length === 0 && <div className="card">No rooms found for this hotel.</div>}
-						<div className="rooms-grid" style={{ marginTop: 12 }}>
-							{rooms.map((room) => (
-								<div className="room-card" key={room._id || room.id}>
-									{room.images && room.images[0] ? (
-										<img src={room.images[0]} alt={room.roomNumber || room.type} style={{ width: "100%", height: 120, objectFit: "cover", borderRadius: 8, marginBottom: 8 }} />
-									) : null}
-									<div style={{ fontWeight: 600 }}>{room.type} {room.roomNumber ? `#${room.roomNumber}` : ""}</div>
-									<div className="muted">{room.description}</div>
-									<div style={{ marginTop: 8 }}><strong>Price:</strong> ${room.price}</div>
-								</div>
-							))}
-						</div>
-					</div>
-				</div>
-			)}
-		</section>
-	);
+        {rooms.length === 0 ? (
+          <p className="empty-text">No rooms found for this hotel.</p>
+        ) : (
+          rooms.map((room) => (
+            <div key={room._id} className="room-card">
+              <h4 className="room-type">{room.roomType}</h4>
+              <p className="room-price">Price: {room.roomPrice} Birr</p>
+              <p className="room-description">{room.description}</p>
+            </div>
+          ))
+        )}
+      </div>
+    </section>
+  );
 }
