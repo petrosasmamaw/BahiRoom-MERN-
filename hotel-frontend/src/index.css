@@ -414,3 +414,17 @@ html, body, #root {
   .profile-actions { justify-content: center; }
 }
 
+/* Reservations admin table */
+.reservations-admin-page .table-wrap { overflow-x: auto; }
+.reservations-table { width: 100%; border-collapse: collapse; min-width: 720px; }
+.reservations-table th, .reservations-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid rgba(15,23,42,0.04); }
+.reservations-table thead th { font-weight: 700; background: transparent; color: var(--muted); font-size: 13px; }
+.reservations-table tbody tr:hover { background: rgba(37,99,235,0.03); }
+.reservations-table .input { padding: 8px 10px; font-size: 14px; border-radius: 8px; }
+.reservations-table .muted { color: var(--muted); font-size: 13px; }
+.reservations-table .btn--sm { padding: 6px 8px; font-size: 13px; }
+
+@media (max-width: 720px) {
+  .reservations-table { min-width: 600px; }
+}
+

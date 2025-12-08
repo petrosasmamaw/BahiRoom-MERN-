@@ -228,6 +228,12 @@ body {
 .clients-loading, .clients-empty { padding: 14px; color: #334155; }
 .muted { color: #64748b; }
 
+/* Reservations specific tweaks */
+.reservations-table tbody td { vertical-align: middle; }
+.reservations-table tbody tr:nth-child(odd) td { background: rgba(247,249,250,0.6); }
+.reservations-table .status-badge { padding: 6px 10px; border-radius: 999px; font-weight:700; font-size: 0.88rem; }
+
+
 /* Hotel status variants (open / closed) */
 .status-open { background: linear-gradient(180deg,#ecfdf5,#d1fae5); color:#065f46; }
 .status-closed { background: linear-gradient(180deg,#fff7ed,#ffedd5); color:#92400e; }
@@ -238,6 +244,42 @@ body {
 .clients-card .btn--danger {
 	color: #0f172a;
 }
+
+/* Dashboard styles */
+.dashboard { padding-bottom: 24px; }
+.dashboard-header { display:flex; align-items:center; justify-content:space-between; margin-bottom: 18px; }
+.stats-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.stat-card { display:flex; gap: 12px; align-items:center; padding: 16px; border-radius: 12px; background: linear-gradient(180deg,#fff,#fcfdff); box-shadow: 0 8px 20px rgba(2,6,23,0.04); border:1px solid rgba(15,23,42,0.03); }
+.stat-icon { width:56px; height:56px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; color:white; }
+.stat-body { display:flex; flex-direction:column; }
+.stat-label { font-weight:700; font-size:14px; }
+.stat-value { font-size:28px; font-weight:800; margin-top:6px; }
+.stat-sub { font-size:13px; margin-top:6px; }
+.bg--blue { background: linear-gradient(90deg,#3b82f6,#2563eb); }
+.bg--teal { background: linear-gradient(90deg,#06b6d4,#0ea5a4); }
+.bg--purple { background: linear-gradient(90deg,#7c3aed,#6d28d9); }
+.bg--orange { background: linear-gradient(90deg,#fb923c,#f97316); }
+
+@media (max-width: 720px) {
+	.stat-value { font-size:22px; }
+}
+
+/* Chart grid */
+.charts-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-top: 18px; }
+.chart-card { padding: 14px; border-radius: 12px; background: #fff; box-shadow: 0 6px 18px rgba(2,6,23,0.04); border:1px solid rgba(15,23,42,0.03); }
+.chart-title { font-weight:700; margin-bottom:8px; }
+.sparkline { display:block; width:100%; height:auto; }
+
+.status-bars { display:flex; flex-direction:column; gap:8px; }
+.status-row { display:flex; align-items:center; gap:12px; }
+.status-label { width:120px; text-transform: capitalize; font-weight:600; }
+.status-bar-wrap { flex:1; height:12px; background: #f1f5f9; border-radius:8px; overflow:hidden; }
+.status-bar { height:100%; border-radius:8px; }
+.status-booked { background: linear-gradient(90deg,#60a5fa,#2563eb); }
+.status-checked-in { background: linear-gradient(90deg,#34d399,#10b981); }
+.status-checked-out { background: linear-gradient(90deg,#e9d5ff,#c084fc); }
+.status-canceled { background: linear-gradient(90deg,#fed7d7,#fb7185); }
+.status-count { width:48px; text-align:right; font-weight:700; }
 
 /* Responsive: stack rows into cards on mobile */
 @media (max-width: 820px) {
