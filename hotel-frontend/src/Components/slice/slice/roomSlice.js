@@ -1,26 +1,44 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const CLIENTAPI = "http://localhost:5001/api/room";
+const CLIENTAPI = "http://localhost:5000/api/room";
 
 export const fetchRooms = createAsyncThunk("rooms/fetchRooms", async () => {
-    const response = await axios.get(CLIENTAPI);
-    return response.data;
+    try {
+        const response = await axios.get(CLIENTAPI);
+        return response.data;
+    } catch (err) {
+        throw new Error(err.response?.data?.message || err.message || 'Failed to fetch rooms');
+    }
 });
 
 export const addRoom = createAsyncThunk("rooms/addRoom", async (roomData) => {
-    const response = await axios.post(CLIENTAPI, roomData);
-    return response.data;
+    try {
+        // If roomData is FormData, allow axios to set the proper multipart header
+        const config = roomData instanceof FormData ? { headers: { 'Content-Type': 'multipart/form-data' } } : {};
+        const response = await axios.post(CLIENTAPI, roomData, config);
+        return response.data;
+    } catch (err) {
+        throw new Error(err.response?.data?.message || err.message || 'Failed to add room');
+    }
 });
 
 export const fetchRoomById = createAsyncThunk("rooms/fetchRoomById", async (roomId) => {
-    const response = await axios.get(`${CLIENTAPI}/${roomId}`);
-    return response.data;
+    try {
+        const response = await axios.get(`${CLIENTAPI}/${roomId}`);
+        return response.data;
+    } catch (err) {
+        throw new Error(err.response?.data?.message || err.message || 'Failed to fetch room');
+    }
 });
 
 export const fetchRoomsByHotelId = createAsyncThunk("rooms/fetchRoomsByHotelId", async (hotelId) => {
-    const response = await axios.get(`${CLIENTAPI}/hotel/${hotelId}`);
-    return response.data;
+    try {
+        const response = await axios.get(`${CLIENTAPI}/hotel/${hotelId}`);
+        return response.data;
+    } catch (err) {
+        throw new Error(err.response?.data?.message || err.message || 'Failed to fetch rooms for hotel');
+    }
 });
 
 export const updateRoom = createAsyncThunk("rooms/updateRoom", async ({ roomId, updatedData }) => {

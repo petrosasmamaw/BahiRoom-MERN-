@@ -65,8 +65,8 @@ export default function App() {
         {user && (
           <>
             <Route path="/" element={<Profile user={user} />} />
-            <Route path="/rooms" element={<Rooms HotelStatus={HotelStatus} /> } />
-            <Route path="/create-room" element={<CreateRoom HotelStatus={HotelStatus}/>} />
+            <Route path="/rooms" element={<Rooms user={user} HotelStatus={HotelStatus} /> } />
+            <Route path="/create-room" element={<CreateRoom user={user} HotelStatus={HotelStatus}/>} />
             <Route path="/reservation" element={<Reservation HotelStatus={HotelStatus}/>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </>

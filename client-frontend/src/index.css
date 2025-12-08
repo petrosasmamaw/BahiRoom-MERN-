@@ -234,3 +234,38 @@ body {
 
 @media (max-width:720px) { .profile-avatar, .profile-avatar--placeholder { width:64px; height:64px; } .profile-actions { justify-content:center; } }
 
+/* Hotel detail specific */
+.hotel-detail-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+}
+.hotel-image {
+  width: 220px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex: 0 0 220px;
+}
+.hotel-image--placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 220px;
+  height: 140px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #eef2ff, #f8fafc);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.rooms-section h3 { margin: 0 0 8px; }
+.rooms-grid { margin-top: 8px; }
+.room-card { padding: 12px; }
+.room-card img { border-radius: 8px; }
+
+/* Make hotel cards look like links */
+.hotel-card { text-decoration: none; color: inherit; display: block; }
+.hotel-card:hover { text-decoration: none; }
+
