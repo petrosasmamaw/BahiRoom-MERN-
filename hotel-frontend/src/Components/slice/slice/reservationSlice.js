@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const CLIENTAPI = "http://localhost:5000/api/reservation";
+const CLIENTAPI = "https://bahiroom-backend.onrender.com/api/reservation";
 
 export const fetchReservations = createAsyncThunk("reservations/fetchReservations", async () => {
     const response = await axios.get(CLIENTAPI);
